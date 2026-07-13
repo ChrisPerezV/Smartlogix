@@ -116,16 +116,22 @@ export function ProductoForm({ onSuccess, initialData }: ProductoFormProps) {
 
             // 2. CREACIÓN O EDICIÓN DEL PRODUCTO
             const payload = {
-                nombre: formData.nombre,
-                sku: formData.sku,
-                descripcion: formData.descripcion,
-                precioActual: Number(formData.precioActual),
-                volumenMl: Number(formData.volumenMl),
-                pesoGramos: Number(formData.pesoGramos),
-                dimensiones: formData.tipoEnvase,
-                estado: initialData?.estado || "activo", // Mantiene el estado original si edita
-                imagenUrl: uploadedImageUrl,
-            };
+            nombre: formData.nombre,
+            sku: formData.sku,          // ✅ viene del estado del form, no del input deshabilitado
+            descripcion: formData.descripcion,
+            precioActual: Number(formData.precioActual),
+            volumenMl: Number(formData.volumenMl),
+            pesoGramos: Number(formData.pesoGramos),
+            dimensiones: formData.tipoEnvase,
+            estado: initialData?.estado || "ACTIVO",
+            imagenUrl: uploadedImageUrl,
+            // ✅ CRÍTICO: estos campos deben pasar para que update() funcione
+            idPerfume: initialData?.idPerfume,
+            marcaId: formData.marcaId || initialData?.marca?.idMarca?.toString() || "",
+            familiaId: formData.familiaId || initialData?.familiaOlfativa?.idFamilia?.toString() || "",
+            marca: initialData?.marca,
+            familiaOlfativa: initialData?.familiaOlfativa,
+        };
 
             if (initialData?.idProducto) {
                 // Actualizar
